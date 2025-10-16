@@ -1,0 +1,5 @@
+{
+  "name": "Gestione Attività Freelance",
+  "description": "Un'applicazione web per freelance per gestire clienti, monitorare le giornate lavorative e analizzare il fatturato mensile, con supporto per modalità giorno e notte e autenticazione sicura.",
+  "requestFramePermissions": []
+}
