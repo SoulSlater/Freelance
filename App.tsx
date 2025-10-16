@@ -4,12 +4,31 @@ import AuthPage from './components/AuthPage';
 import DashboardPage from './components/DashboardPage';
 import ClientsPage from './components/ClientsPage';
 import RevenuePage from './components/RevenuePage';
+import ConfirmationPage from './components/ConfirmationPage';
 import { useTheme } from './hooks/useTheme';
 import { AppView } from './types';
 import { SunIcon, MoonIcon, LogoutIcon, DashboardIcon, UsersIcon, ChartBarIcon, UserIcon } from './components/ui/Icons';
 import { supabase } from './services/supabase';
 
 const App: React.FC = () => {
+  const [isConfirmation, setIsConfirmation] = useState(false);
+
+  useEffect(() => {
+    // Supabase usa # per i token di autenticazione nel link di conferma.
+    // Verifichiamo la presenza di 'access_token' per identificare questo caso specifico.
+    const hash = window.location.hash;
+    if (hash.includes('access_token') && hash.includes('type=signup')) {
+      setIsConfirmation(true);
+      // Pulisce l'hash dall'URL per evitare che il check si ripeta
+      // e per non lasciare i token visibili nella barra degli indirizzi.
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
+
+  if (isConfirmation) {
+    return <ConfirmationPage />;
+  }
+
   return (
     <AuthProvider>
       <MainApp />
