@@ -20,12 +20,14 @@ const AuthPage: React.FC = () => {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       } else {
-        const { error } = await supabase.auth.signUp({ 
-          email, 
+        const { error } = await supabase.auth.signUp({
+          email,
           password,
           options: {
-            emailRedirectTo: window.location.origin,
-          }
+            // Specifichiamo esplicitamente l'URL di reindirizzamento
+            // per essere sicuri che Supabase sappia dove mandare l'utente.
+            emailRedirectTo: `${window.location.origin}`,
+          },
         });
         if (error) throw error;
         setMessage('Registrazione avvenuta! Controlla la tua email per la verifica.');
@@ -47,7 +49,7 @@ const AuthPage: React.FC = () => {
     setError('');
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}`,
       });
       if (error) throw error;
       setMessage('Email di recupero password inviata! Controlla la tua casella di posta.');
